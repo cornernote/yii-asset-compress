@@ -64,9 +64,9 @@ return array(
                         // format is: asset.path.alias|path/to/asset.css
                         'vendor.twbs.bootstrap.dist|css/bootstrap.css',             // -{ (alias!=application) = this asset path will be
                         'bootstrap.assets|css/yiistrap.css',                        // -{ published, and any url() in the CSS will be 
-                        'vendor.fortawesome.font-awesome|css/font-awesome.min.css', // -{ replaced with this path.
+                        'vendor.fortawesome.font-awesome|css/font-awesome.min.css', // -{ replaced with the correct relative path.
                         'application.assets|css/app.css',                           // -{
-                        'application|css/app.css',                                  //  - (alias=application) = uses webroot, assets not published
+                        'application|css/app.css',                                  // - (alias=application) = Uses webroot, assets not published.
                     ),
                 ),
                 'minify' => true
@@ -77,9 +77,9 @@ return array(
                         // format is: asset.path.alias|path/to/asset.js
                         'system.web.js.source|jquery.min.js',            // -{ (alias!=application) = this asset path will be
                         'system.web.js.source|jquery.yiiactiveform.js',  // -{ published, and any url() in the CSS will be 
-                        'vendor.twbs.bootstrap.dist|js/bootstrap.js',    // -{ replaced with this path.
+                        'vendor.twbs.bootstrap.dist|js/bootstrap.js',    // -{ replaced with the correct relative path.
                         'application.assets|js/app.js',                  // -{ 
-                        'application|js/app.js',                         // - (alias=application) = uses webroot, assets not published
+                        'application|js/app.js',                         // - (alias=application) = Uses webroot, assets not published.
                     ),
                 ),
                 'minify' => true

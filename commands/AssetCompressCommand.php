@@ -93,12 +93,12 @@ class AssetCompressCommand extends CConsoleCommand
 
             if ($ext == "css" && $this->css['minify']) {
                 $this->consoleEcho("Minifying ", "0;32");
-                $this->consoleEcho(" $filename \r\n");
+                $this->consoleEcho("$filename \r\n");
                 $content = $this->minifyCSS($content);
             }
             if ($ext == "js" && $this->js['minify']) {
                 $this->consoleEcho("Minifying ", "0;32");
-                $this->consoleEcho(" $filename \r\n");
+                $this->consoleEcho("$filename \r\n");
                 $content = $this->minifyJS($content);
             }
 
@@ -106,9 +106,8 @@ class AssetCompressCommand extends CConsoleCommand
             if (!is_dir($dir)) {
                 mkdir($dir, 0755, true);
             }
-            $file = new SplFileInfo($this->_assetsPath . '/' . $filename);
-            $this->consoleEcho("Writing ", "0;32", true);
-            $this->consoleEcho($file->getFilename() . " \r\n", null, true);
+            $this->consoleEcho("Writing ", "0;32");
+            $this->consoleEcho("$filename \r\n");
             file_put_contents($this->_assetsPath . '/' . $filename, $content);
         }
     }
