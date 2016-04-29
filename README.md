@@ -8,12 +8,52 @@ Command to merge and minify assets for Yii.
 - Replaces releative `url()` in CSS files
 - Publishes required assets so that relative assets are available
 
-## Documentation
+## Installation
 
-Add to your CLI config:
+Please download using ONE of the following methods:
+
+### Composer Installation
+
+All requirements are automatically downloaded into the correct location when using composer. There is no need to download additional files or set paths to third party files.
+
+Get composer:
 
 ```
-$config = array(
+curl http://getcomposer.org/installer | php
+```
+
+Install latest release OR development version:
+
+```
+php composer.phar require cornernote/yii-asset-compress:*            // latest release
+php composer.phar require cornernote/yii-asset-compress:dev-master    // development version
+```
+
+Add the `vendor` folder to the `aliases` in your yii configuration:
+
+```
+return array(
+    'aliases' => array(
+        'vendor' => '/path/to/vendor',
+    ),
+);
+```
+
+### Manual Installation
+
+Download the [latest release](https://github.com/cornernote/yii-asset-compress/releases/latest) or [development version](https://github.com/cornernote/yii-asset-compress/archive/master.zip) and move the `commands/AssetCompressCommand.php` file into your `protected/commands` folder.
+
+In addition the following are required:
+- [tedious/JShrink](https://github.com/tedious/JShrink)
+- [mrclay/minify](https://github.com/mrclay/minify)
+
+
+## Configuration
+
+Add to your yii console config:
+
+```
+return array(
     'commandMap' => array(
         'assetCompress' => array(
             'class' => 'vendor.cornernote.yii-asset-compress.commands.AssetCompressCommand',
@@ -63,7 +103,9 @@ $config = array(
 );
 ```
 
-Then run from your YIIC command:
+## Compressing Assets
+
+Run using your `yiic` command:
 
 ```
 php yiic assetCompress
