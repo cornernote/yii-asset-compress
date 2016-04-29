@@ -127,26 +127,24 @@ class ClientScript extends CClientScript
     }
     public function registerScriptFile($url, $position = null, array $htmlOptions = array())
     {
-        foreach ($this->ignoreScriptFile as $ignore) {
+        foreach ($this->ignoreScriptFile as $ignore)
             if ($this->endsWith($url, $ignore))
                 return $this;
-        }
         return parent::registerScriptFile($url, $position, $htmlOptions);
     }
     public function registerCssFile($url, $media = '')
     {
-        foreach ($this->ignoreCssFile as $ignore) {
+        foreach ($this->ignoreCssFile as $ignore)
             if ($this->endsWith($url, $ignore))
                 return $this;
-        }
         return parent::registerCssFile($url, $media);
     }
+
     private function endsWith($haystack, $needle)
     {
         $length = strlen($needle);
-        if ($length == 0) {
+        if ($length == 0)
             return true;
-        }
         return (substr($haystack, -$length) === $needle);
     }
 }
