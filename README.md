@@ -60,40 +60,26 @@ return array(
             'assetsPath' => 'application.assets',
             'css' => array(
                 'combine' => array(
-                    'css/desktop.css' => array(
+                    'css/combined.css' => array(                                     // output to application.assets|css/desktop.css
                         // format is: asset.path.alias|path/to/asset.css
                         'vendor.twbs.bootstrap.dist|css/bootstrap.css',             // -{ (alias!=application) = this asset path will be
                         'bootstrap.assets|css/yiistrap.css',                        // -{ published, and any url() in the CSS will be 
                         'vendor.fortawesome.font-awesome|css/font-awesome.min.css', // -{ replaced with this path.
-                        'application.assets|css/desktop.css',                       // -{
-                        'application|css/desktop.css',                              //  - (alias=application) = webroot, assets not published
-                    ),
-                    'css/mobile.css' => array(
-                        'vendor.twbs.bootstrap.dist|css/bootstrap.css',
-                        'bootstrap.assets|css/yiistrap.css',
-                        'vendor.fortawesome.font-awesome|css/font-awesome.min.css',
-                        'application.assets|css/mobile.css',
-                        'application|css/mobile.css',
+                        'application.assets|css/app.css',                           // -{
+                        'application|css/app.css',                                  //  - (alias=application) = uses webroot, assets not published
                     ),
                 ),
                 'minify' => true
             ),
             'js' => array(
                 'combine' => array(
-                    'js/desktop.js' => array(
+                    'js/combined.js' => array(                            // output to application.assets|js/desktop.js
                         // format is: asset.path.alias|path/to/asset.js
                         'system.web.js.source|jquery.min.js',            // -{ (alias!=application) = this asset path will be
                         'system.web.js.source|jquery.yiiactiveform.js',  // -{ published, and any url() in the CSS will be 
                         'vendor.twbs.bootstrap.dist|js/bootstrap.js',    // -{ replaced with this path.
-                        'application.assets|js/desktop.js',              // -{ 
-                        'application|js/desktop.js',                     // - webroot, assets not published
-                    ),
-                    'js/mobile.js' => array(
-                        'system.web.js.source|jquery.min.js',
-                        'system.web.js.source|jquery.yiiactiveform.js',
-                        'vendor.twbs.bootstrap.dist|js/bootstrap.js',
-                        'application.assets|js/mobile.js',
-                        'application|js/mobile.js',
+                        'application.assets|js/app.js',                  // -{ 
+                        'application|js/app.js',                         // - (alias=application) = uses webroot, assets not published
                     ),
                 ),
                 'minify' => true
@@ -109,6 +95,85 @@ Run using your `yiic` command:
 
 ```
 php yiic assetCompress
+```
+
+## Using Assets
+
+To display your combined assets on your page you can use the following in your layout file:
+
+```
+$baseUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.assets'));
+Yii::app()->clientScript->registerCssFile($baseUrl . '/css/combined.css');
+Yii::app()->clientScript->registerScriptFile($baseUrl . '/js/combined.js');
+```
+
+## Supressing Merged Assets
+
+Now that you have jQuery and Bootstrap (and others) merged, you don't want them to output.  One method is to overwrite CClientScript:
+
+```
+<?php
+class ClientScript extends CClientScript
+{
+    public $ignoreCoreScript = array();
+    public $ignoreScriptFile = array();
+    public $ignoreCssFile = array();
+
+    public function registerCoreScript($name, $options = array())
+    {
+        if (in_array($name, $this->ignoreCoreScript))
+            return $this;
+        return parent::registerCoreScript($name);
+    }
+    public function registerScriptFile($url, $position = null, array $htmlOptions = array())
+    {
+        foreach ($this->ignoreScriptFile as $ignore) {
+            if ($this->endsWith($url, $ignore))
+                return $this;
+        }
+        return parent::registerScriptFile($url, $position, $htmlOptions);
+    }
+    public function registerCssFile($url, $media = '')
+    {
+        foreach ($this->ignoreCssFile as $ignore) {
+            if ($this->endsWith($url, $ignore))
+                return $this;
+        }
+        return parent::registerCssFile($url, $media);
+    }
+    private function endsWith($haystack, $needle)
+    {
+        $length = strlen($needle);
+        if ($length == 0) {
+            return true;
+        }
+        return (substr($haystack, -$length) === $needle);
+    }
+}
+```
+
+Set this up in your config as follows:
+
+```
+return array(
+    'components' => array(
+        'clientScript' => array(
+            'class' => 'application.components.ClientScript',
+            'ignoreCssFile' => array(
+                'bootstrap.css',
+                'yiistrap.css',
+                'font-awesome.min.css',
+            ),
+            'ignoreScriptFile'=>array(
+                'bootstrap.js',
+            ),
+            'ignoreCoreScript' => array(
+                'jquery',
+                'yiiactiveform',
+            ),
+        ),
+    ),
+);
 ```
 
 
