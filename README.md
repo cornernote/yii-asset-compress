@@ -97,6 +97,8 @@ Run using your `yiic` command:
 php yiic assetCompress
 ```
 
+![command](https://cloud.githubusercontent.com/assets/51875/14907318/2b09d194-0e06-11e6-8f9b-2ae796191e2b.png)
+
 ## Using Assets
 
 To display your combined assets on your page you can use the following in your layout file:
