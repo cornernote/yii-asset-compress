@@ -31,7 +31,7 @@ php composer.phar require cornernote/yii-asset-compress:dev-master    // develop
 
 Add the `vendor` folder to the `aliases` in your yii configuration:
 
-```
+```php
 return array(
     'aliases' => array(
         'vendor' => '/path/to/vendor',
@@ -52,7 +52,7 @@ In addition the following are required:
 
 Add to your yii console config:
 
-```
+```php
 return array(
     'commandMap' => array(
         'assetCompress' => array(
@@ -103,7 +103,7 @@ php yiic assetCompress
 
 To display your combined assets on your page you can use the following in your layout file:
 
-```
+```php
 $baseUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.assets'));
 Yii::app()->clientScript->registerCssFile($baseUrl . '/css/combined.css');
 Yii::app()->clientScript->registerScriptFile($baseUrl . '/js/combined.js');
@@ -113,7 +113,7 @@ Yii::app()->clientScript->registerScriptFile($baseUrl . '/js/combined.js');
 
 Now that you have jQuery and Bootstrap (and others) merged, you don't want them to output.  One method is to overwrite CClientScript:
 
-```
+```php
 <?php
 class ClientScript extends CClientScript
 {
@@ -154,7 +154,7 @@ class ClientScript extends CClientScript
 
 Set this up in your config as follows:
 
-```
+```php
 return array(
     'components' => array(
         'clientScript' => array(
